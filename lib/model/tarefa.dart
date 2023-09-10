@@ -11,7 +11,7 @@ class Tarefa {
     return _id;
   }
 
-  String getDescricao(descricao) {
+  String getDescricao() {
     return _descricao;
   }
 

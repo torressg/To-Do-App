@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/pages/tarefa_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
               posicaoPagina = value;
             });
           },
-          children: [],
+          children: const [TarefaPage()],
         ),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -34,11 +35,7 @@ class _HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                   label: "Artigos", icon: Icon(Icons.article_outlined)),
               BottomNavigationBarItem(
-                  label: "ListViewV", icon: Icon(Icons.image)),
-              BottomNavigationBarItem(
-                  label: "SimApp", icon: Icon(Icons.message_outlined)),
-              BottomNavigationBarItem(
-                  label: "ListViewH", icon: Icon(Icons.home)),
+                  label: "Account", icon: Icon(Icons.person)),
             ]),
       ),
     );
