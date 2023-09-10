@@ -10,10 +10,7 @@ class TarefaRepository {
 
   Future<void> alterarTarefa(String id, bool concluido) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _tarefas
-        .where((tarefa) => tarefa.getId() == id)
-        .first
-        .setConcluido(concluido);
+    _tarefas.where((tarefa) => tarefa.id == id).first.concluido = concluido;
   }
 
   Future<List<Tarefa>> listarTarefas() async {
@@ -23,11 +20,11 @@ class TarefaRepository {
 
   Future<List<Tarefa>> listarTarefasNaoConcluida() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return _tarefas.where((tarefa) => !tarefa.getConcluido()).toList();
+    return _tarefas.where((tarefa) => !tarefa.concluido).toList();
   }
 
   Future<void> excluirTarefa(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _tarefas.remove(_tarefas.where((tarefa) => tarefa.getId() == id).first);
+    _tarefas.remove(_tarefas.where((tarefa) => tarefa.id == id).first);
   }
 }

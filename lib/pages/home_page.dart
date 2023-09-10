@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Testes")),
+        appBar: AppBar(title: const Text("To Do List")),
         body: PageView(
           controller: controller,
           onPageChanged: (value) {

@@ -97,18 +97,18 @@ class _TarefaPageState extends State<TarefaPage> {
                     var tarefa = _tarefas[index];
                     return Dismissible(
                       onDismissed: (direction) async {
-                        await tarefaRepository.excluirTarefa(tarefa.getId());
+                        await tarefaRepository.excluirTarefa(tarefa.id);
                         obterTarefas();
                         setState(() {});
                       },
-                      key: Key(tarefa.getId()),
+                      key: Key(tarefa.id),
                       child: ListTile(
-                        title: Text(tarefa.getDescricao()),
+                        title: Text(tarefa.descricao),
                         trailing: Switch(
-                            value: tarefa.getConcluido(),
+                            value: tarefa.concluido,
                             onChanged: (bool value) async {
                               await tarefaRepository.alterarTarefa(
-                                  tarefa.getId(), value);
+                                  tarefa.id, value);
                               obterTarefas();
                             }),
                       ),
