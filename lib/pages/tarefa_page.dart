@@ -96,10 +96,31 @@ class _TarefaPageState extends State<TarefaPage> {
                   itemBuilder: (BuildContext bc, int index) {
                     var tarefa = _tarefas[index];
                     return Dismissible(
+                      background: Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 20),
+                        color: Colors.red,
+                        child: Icon(Icons.delete_forever),
+                      ),
+                      secondaryBackground: Container(
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20),
+                        color: Colors.amber[700],
+                        child: Icon(Icons.edit),
+                      ),
+                      // direction: DismissDirection.startToEnd ,
                       onDismissed: (direction) async {
-                        await tarefaRepository.excluirTarefa(tarefa.id);
-                        obterTarefas();
-                        setState(() {});
+                        if (direction == DismissDirection.startToEnd) {
+                          print("teste");
+                          await tarefaRepository.excluirTarefa(tarefa.id);
+                          obterTarefas();
+                          setState(() {});
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Uma tarefa foi removida"),
+                            ),
+                          );
+                        } else if (direction == DismissDirection.endToStart) {}
                       },
                       key: Key(tarefa.id),
                       child: ListTile(
