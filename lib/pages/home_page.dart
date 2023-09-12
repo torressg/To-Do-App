@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("To Do List")),
+        appBar: AppBar(title: const Text("Lista de Tarefas")),
         body: PageView(
           controller: controller,
           onPageChanged: (value) {
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             currentIndex: posicaoPagina,
             items: const [
               BottomNavigationBarItem(
-                  label: "Artigos", icon: Icon(Icons.article_outlined)),
+                  label: "Tarefas", icon: Icon(Icons.article_outlined)),
               BottomNavigationBarItem(
                   label: "Account", icon: Icon(Icons.person)),
             ]),

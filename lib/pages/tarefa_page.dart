@@ -17,7 +17,6 @@ class _TarefaPageState extends State<TarefaPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     obterTarefas();
   }
@@ -69,23 +68,21 @@ class _TarefaPageState extends State<TarefaPage> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Apenas não concluídos",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
-                  Switch(
-                      value: apenasNaoConcluidos,
-                      onChanged: (bool value) {
-                        apenasNaoConcluidos = value;
-                        obterTarefas();
-                        setState(() {});
-                      }),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Apenas não concluídos",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+                Switch(
+                    value: apenasNaoConcluidos,
+                    onChanged: (bool value) {
+                      apenasNaoConcluidos = value;
+                      obterTarefas();
+                      setState(() {});
+                    }),
+              ],
             ),
             const Column(
               children: [Divider()],
@@ -98,37 +95,109 @@ class _TarefaPageState extends State<TarefaPage> {
                     return Dismissible(
                       background: Container(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20),
                         color: Colors.red,
-                        child: Icon(Icons.delete_forever),
+                        child: const Icon(Icons.delete_forever),
                       ),
                       secondaryBackground: Container(
                         alignment: Alignment.centerRight,
-                        padding: EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         color: Colors.amber[700],
-                        child: Icon(Icons.edit),
+                        child: const Icon(Icons.edit),
                       ),
-                      // direction: DismissDirection.startToEnd ,
-                      onDismissed: (direction) async {
+                      confirmDismiss: (direction) async {
                         if (direction == DismissDirection.startToEnd) {
-                          print("teste");
                           await tarefaRepository.excluirTarefa(tarefa.id);
                           obterTarefas();
                           setState(() {});
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Uma tarefa foi removida"),
+                              content: Text(
+                                  'A tarefa "${tarefa.descricao}" foi removida.'),
                             ),
                           );
-                        } else if (direction == DismissDirection.endToStart) {}
+                        } else if (direction == DismissDirection.endToStart) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext bc) {
+                                return AlertDialog(
+                                  title: const Text("Alterar tarefa"),
+                                  content: TextField(
+                                    controller: descricaoController,
+                                    decoration: const InputDecoration(
+                                        labelText: "Edite aqui:"),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Cancelar")),
+                                    TextButton(
+                                        onPressed: () async {
+                                          await tarefaRepository.alterarTarefa(
+                                            tarefa.id,
+                                            descricaoController.text,
+                                          );
+                                          Navigator.pop(context);
+                                          setState(() {});
+                                        },
+                                        child: const Text("Salvar"))
+                                  ],
+                                );
+                              });
+                        }
                       },
+                      // onDismissed: (direction) async {
+                      //   if (direction == DismissDirection.startToEnd) {
+                      //     print("teste");
+                      //     await tarefaRepository.excluirTarefa(tarefa.id);
+                      //     obterTarefas();
+                      //     setState(() {});
+                      //     ScaffoldMessenger.of(context).showSnackBar(
+                      //       SnackBar(
+                      //         content: Text("Uma tarefa foi removida"),
+                      //       ),
+                      //     );
+                      //   } else if (direction == DismissDirection.endToStart) {
+                      //     showDialog(
+                      //         context: context,
+                      //         builder: (BuildContext bc) {
+                      //           return AlertDialog(
+                      //             title: const Text("Alterar tarefa"),
+                      //             content: TextField(
+                      //               controller: descricaoController,
+                      //               decoration: InputDecoration(
+                      //                   labelText: "Edite aqui."),
+                      //             ),
+                      //             actions: [
+                      //               TextButton(
+                      //                   onPressed: () {
+                      //                     Navigator.pop(context);
+                      //                   },
+                      //                   child: const Text("Cancelar")),
+                      //               TextButton(
+                      //                   onPressed: () async {
+                      //                     await tarefaRepository
+                      //                         .adicionarTarefa(Tarefa(
+                      //                             descricaoController.text,
+                      //                             false));
+                      //                     Navigator.pop(context);
+                      //                     setState(() {});
+                      //                   },
+                      //                   child: const Text("Salvar"))
+                      //             ],
+                      //           );
+                      //         });
+                      //   }
+                      // },
                       key: Key(tarefa.id),
                       child: ListTile(
                         title: Text(tarefa.descricao),
                         trailing: Switch(
                             value: tarefa.concluido,
                             onChanged: (bool value) async {
-                              await tarefaRepository.alterarTarefa(
+                              await tarefaRepository.finalizarTarefa(
                                   tarefa.id, value);
                               obterTarefas();
                             }),

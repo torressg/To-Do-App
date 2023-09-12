@@ -8,9 +8,18 @@ class TarefaRepository {
     _tarefas.add(tarefa);
   }
 
-  Future<void> alterarTarefa(String id, bool concluido) async {
+  Future<void> finalizarTarefa(String id, bool concluido) async {
     await Future.delayed(const Duration(milliseconds: 200));
     _tarefas.where((tarefa) => tarefa.id == id).first.concluido = concluido;
+  }
+
+  Future<void> alterarTarefa(String id, String novaDescricao) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    final tarefaEncontrada = _tarefas.firstWhere(
+      (tarefa) => tarefa.id == id,
+      orElse: () => Tarefa("", false),
+    );
+    tarefaEncontrada.descricao = novaDescricao;
   }
 
   Future<List<Tarefa>> listarTarefas() async {
